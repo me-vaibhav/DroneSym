@@ -5,7 +5,7 @@ const Group = require('../Models/group');
 const User = require('../Models/user');
 const Drone = require('../Models/drone');
 
-// const droneRef = db.ref('/drones');
+// const droneRef = db.ref('/drones'); 
 
 const flaskUrl = 'http://localhost:5000/dronesym/api/flask';
 

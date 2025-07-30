@@ -1,3 +1,5 @@
+> **Docker is the recommended way to run DroneSym. See the bottom of this file for Docker instructions.**
+
 ![dronesym_logo](https://user-images.githubusercontent.com/17242746/47440055-18d8e280-d7cb-11e8-984c-8a495e281275.png)
 
 # DroneSym
@@ -104,21 +106,42 @@ username: icarus
 password: icarus
 ```
 
-### Part 4 - Running with Docker (Optional)
 
-Checkout to docker branch
+---
 
-```sh
-$ git checkout docker
-```
+> **Note:**
+>
+> **Docker is now the default and recommended way to run DroneSym.**
+> Please use the Docker instructions below for the simplest and most reliable setup. Manual setup instructions are provided for reference and advanced users.
 
-Navigate to the root folder
+### Running with Docker (Recommended)
 
-Run
+1. Make sure you are on the `docker` branch:
+   ```sh
+   git checkout docker
+   ```
+2. Navigate to the root folder.
+3. Build and start all services:
+   ```sh
+   docker-compose up --build
+   ```
+4. Initialize the MongoDB replica set (first time only):
+   ```sh
+   docker exec -it dronesym-mongo-1 mongosh
+   rs.initiate()
+   exit
+   ```
+5. Import initial user data:
+   ```sh
+   docker cp dronedb/dronesym/users.bson dronesym-mongo-1:/users.bson
+   docker exec -it dronesym-mongo-1 mongorestore --db dronesym --collection users /users.bson
+   ```
+6. Access the frontend at [http://localhost:4200](http://localhost:4200)
+7. Default login credentials:
+   - Admin: `admin` / `admin`
+   - User: `icarus` / `icarus`
 
-```sh
-$ docker-compose up
-```
+For more details and troubleshooting, see `changes-note.md`.
 
 ### Run Unit Tests Node
 
