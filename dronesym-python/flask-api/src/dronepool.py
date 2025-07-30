@@ -104,16 +104,26 @@ def create_new_drone(kwargs):
     db_key = kwargs.get("db_key", None)
     retries = 3
 
+
+    print(f"[DEBUG] Creating SITL instance {instance_count} for drone {db_key} at home {home}")
     drone = Sim(instance_count, home)
-    drone.launch()
+    print(f"[DEBUG] Launching SITL for drone {db_key}...")
+    try:
+        drone.launch()
+        print(f"[DEBUG] SITL launched for drone {db_key}.")
+    except Exception as e:
+        print(f"[ERROR] SITL launch failed for drone {db_key}: {e}")
     drone_conn = ''
     while retries > 0:
         try:
-            drone_conn = connect(drone.connection_string(), wait_ready=True)
-            #drone_conn = connect('tcp:127.0.0.1:5780', wait_ready=True)
+            conn_str = drone.connection_string()
+            print(f"[DEBUG] Attempting to connect to SITL at {conn_str} (retries left: {retries})")
+            drone_conn = connect(conn_str, wait_ready=True)
             drone_conn.wait_ready(True, timeout=300)
+            print(f"[DEBUG] Connected to SITL for drone {db_key}.")
             break
-        except BaseException:
+        except BaseException as e:
+            print(f"[ERROR] Connection to SITL failed for drone {db_key}: {e}")
             print("Retrying...")
             retries -= 1
 

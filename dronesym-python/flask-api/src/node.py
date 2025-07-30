@@ -4,7 +4,7 @@ import time
 import requests
 
 
-apiUrl = 'http://localhost:3000/dronesym/api/node'
+apiUrl = 'http://node:3000/dronesym/api/node'
 
 
 def update_drone(id, status):

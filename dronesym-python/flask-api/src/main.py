@@ -83,8 +83,8 @@ def send_resume(drone_id):
     return jsonify({"status": "resuming", "drone_id": drone_id})
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     threadrunner.initialize()
     q = threadrunner.q
     dronepool.initialize()
-    app.run(debug=True, use_reloader=False)
+    app.run(host="0.0.0.0", port=5000, debug=True, use_reloader=False)
